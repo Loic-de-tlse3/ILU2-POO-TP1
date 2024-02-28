@@ -8,7 +8,14 @@ public class Village {
 	private Chef chef;
 	private Gaulois[] villageois;
 	private int nbVillageois = 0;
+	private Marche marche;
 
+	public Village(String nom, int nbVillageoisMaximum, int nbEtalsMaximum) {
+		this.nom = nom;
+		villageois = new Gaulois[nbVillageoisMaximum];
+		this.marche = new Marche(nbEtalsMaximum);
+	}
+	
 	private static class Marche {
 		private Etal[] etals;
 
@@ -73,11 +80,6 @@ public class Village {
 			chaineRenvoyee.append("Il reste " + nbEtalVide + "étals non utilisés dans le marché.");
 			return chaineRenvoyee.toString();
 		}
-	}
-	
-	public Village(String nom, int nbVillageoisMaximum) {
-		this.nom = nom;
-		villageois = new Gaulois[nbVillageoisMaximum];
 	}
 
 	public String getNom() {
