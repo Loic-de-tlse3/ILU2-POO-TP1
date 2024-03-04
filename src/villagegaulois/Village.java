@@ -124,4 +124,13 @@ public class Village {
 		}
 		return chaine.toString();
 	}
+	
+	public String installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
+		StringBuilder chaineRenvoyee = new StringBuilder();
+		chaineRenvoyee.append(vendeur + " cherche un endroit pour vendre " + nbProduit + " " + produit + ".\n");
+		int premierEtalLibre = marche.trouverEtalLibre();
+		marche.utiliserEtal(premierEtalLibre, vendeur, produit, nbProduit);
+		chaineRenvoyee.append("Le vendeur " + vendeur + " vend des " + produit + " à l'étal n°" + premierEtalLibre + ".\n");
+		return chaineRenvoyee.toString();
+	}
 }
