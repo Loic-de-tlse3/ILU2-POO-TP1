@@ -22,6 +22,9 @@ public class Village {
 		private Marche(int nbEtal) {
 			super();
 			etals = new Etal[nbEtal];
+			for (int i = 0; i < etals.length; i++) {
+				etals[i] = new Etal();
+			}
 		}
 		
 		public void utiliserEtal(int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
@@ -40,14 +43,18 @@ public class Village {
 		
 		Etal[] trouverEtals(String produit) {
 			int occurenceProduit = 0;
+			int nbEtal = 0;
 			for (int i = 0; i < etals.length; i++) {
-				if (etals[i].contientProduit(produit)){
-					occurenceProduit++;
+				if (etals[i].isEtalOccupe()) {
+					nbEtal++;
+					if (etals[i].contientProduit(produit)){
+						occurenceProduit++;
+					}
 				}
 			}
 			Etal[] etalTrouvee = new Etal[occurenceProduit];
 			int numeroEtalProduit = 0;
-			for (int i = 0; i < etals.length; i++) {
+			for (int i = 0; i < nbEtal; i++) {
 				if (etals[i].contientProduit(produit)){
 					etalTrouvee[numeroEtalProduit] = etals[i];
 					numeroEtalProduit++;
@@ -58,11 +65,12 @@ public class Village {
 		
 		public Etal trouverVendeur(Gaulois gaulois) {
 			for (int i = 0; i < etals.length; i++) {
-				if (etals[i].getVendeur().equals(gaulois)) {
-					return etals[i];
+				if (etals[i].isEtalOccupe()) {
+					if (etals[i].getVendeur().equals(gaulois)) {
+						return etals[i];
+					}
 				}
 			}
-			System.out.println("Ce vendeur n'est pas présent");
 			return null;
 		}
 		
@@ -89,7 +97,7 @@ public class Village {
 	public void setChef(Chef chef) {
 		this.chef = chef;
 	}
-
+	
 	public void ajouterHabitant(Gaulois gaulois) {
 		if (nbVillageois < villageois.length) {
 			villageois[nbVillageois] = gaulois;
@@ -127,10 +135,68 @@ public class Village {
 	
 	public String installerVendeur(Gaulois vendeur, String produit, int nbProduit) {
 		StringBuilder chaineRenvoyee = new StringBuilder();
-		chaineRenvoyee.append(vendeur + " cherche un endroit pour vendre " + nbProduit + " " + produit + ".\n");
+		chaineRenvoyee.append(vendeur.getNom() + " cherche un endroit pour vendre " + nbProduit + " " + produit + ".\n");
 		int premierEtalLibre = marche.trouverEtalLibre();
-		marche.utiliserEtal(premierEtalLibre, vendeur, produit, nbProduit);
-		chaineRenvoyee.append("Le vendeur " + vendeur + " vend des " + produit + " à l'étal n°" + premierEtalLibre + ".\n");
+		if (premierEtalLibre == -1) {
+			chaineRenvoyee.append(vendeur.getNom() + " n'a pas trouvé de place pour s'installer \n");
+		}
+		else {
+			marche.utiliserEtal(premierEtalLibre, vendeur, produit, nbProduit);
+			chaineRenvoyee.append("Le vendeur " + vendeur.getNom() + " vend des " + produit + " à l'étal n°" + premierEtalLibre + ".\n");
+		}
 		return chaineRenvoyee.toString();
 	}
+	
+	public String rechercherVendeursProduit(String produit) {
+		StringBuilder ChaineRenvoyee = new StringBuilder();
+
+		Etal[] etalsProduit = marche.trouverEtals(produit);
+		if (etalsProduit.length == 0) {
+			ChaineRenvoyee.append("Il n'y a pas de vendeur qui propose des " + produit + " au marché.\n");
+		}
+		else if (etalsProduit.length == 1) {
+			ChaineRenvoyee.append("Seul le vendeur " + etalsProduit[0].getVendeur().getNom() + " propose des " + produit + " au marché\n");
+		}
+		else {
+			ChaineRenvoyee.append("les vendeurs qui proposent des fleurs sont :\n");
+			for (int i = 0; i < etalsProduit.length; i++) {
+				ChaineRenvoyee.append("- " + etalsProduit[i].getVendeur().getNom() + "\n");
+			}
+		}
+		return ChaineRenvoyee.toString();
+	}
+	
+	public Etal rechercherEtal(Gaulois vendeur) {
+		Etal etalVendeur = marche.trouverVendeur(vendeur);
+			return etalVendeur;
+	}
+	
+	public String partirVendeur(Gaulois vendeur) {
+		StringBuilder ChaineRenvoyee = new StringBuilder();
+		ChaineRenvoyee.append("Le vendeur " + vendeur.getNom() + " quitte son étal\n");
+		return ChaineRenvoyee.toString();
+	}
+	
+	public String afficherMarche() {
+		StringBuilder ChaineRenvoyee = new StringBuilder();
+		ChaineRenvoyee.append("Le marché du village \"le village des irréductibles\" possède plusieurs étals :\n");
+		ChaineRenvoyee.append(marche.afficherMarche());
+		return ChaineRenvoyee.toString();
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
