@@ -151,40 +151,39 @@ public class Village {
 	}
 	
 	public String rechercherVendeursProduit(String produit) {
-		StringBuilder ChaineRenvoyee = new StringBuilder();
+		StringBuilder chaineRenvoyee = new StringBuilder();
 
 		Etal[] etalsProduit = marche.trouverEtals(produit);
 		if (etalsProduit.length == 0) {
-			ChaineRenvoyee.append("Il n'y a pas de vendeur qui propose des " + produit + " au march�.\n");
+			chaineRenvoyee.append("Il n'y a pas de vendeur qui propose des " + produit + " au march�.\n");
 		}
 		else if (etalsProduit.length == 1) {
-			ChaineRenvoyee.append("Seul le vendeur " + etalsProduit[0].getVendeur().getNom() + " propose des " + produit + " au march�\n");
+			chaineRenvoyee.append("Seul le vendeur " + etalsProduit[0].getVendeur().getNom() + " propose des " + produit + " au march�\n");
 		}
 		else {
-			ChaineRenvoyee.append("les vendeurs qui proposent des fleurs sont :\n");
+			chaineRenvoyee.append("les vendeurs qui proposent des fleurs sont :\n");
 			for (int i = 0; i < etalsProduit.length; i++) {
-				ChaineRenvoyee.append("- " + etalsProduit[i].getVendeur().getNom() + "\n");
+				chaineRenvoyee.append("- " + etalsProduit[i].getVendeur().getNom() + "\n");
 			}
 		}
-		return ChaineRenvoyee.toString();
+		return chaineRenvoyee.toString();
 	}
 	
 	public Etal rechercherEtal(Gaulois vendeur) {
-		Etal etalVendeur = marche.trouverVendeur(vendeur);
-			return etalVendeur;
+		return marche.trouverVendeur(vendeur);
 	}
 	
 	public String partirVendeur(Gaulois vendeur) {
-		StringBuilder ChaineRenvoyee = new StringBuilder();
-		ChaineRenvoyee.append("Le vendeur " + vendeur.getNom() + " quitte son �tal\n");
-		return ChaineRenvoyee.toString();
+		StringBuilder chaineRenvoyee = new StringBuilder();
+		chaineRenvoyee.append("Le vendeur " + vendeur.getNom() + " quitte son etal\n");
+		return chaineRenvoyee.toString();
 	}
 	
 	public String afficherMarche() {
-		StringBuilder ChaineRenvoyee = new StringBuilder();
-		ChaineRenvoyee.append("Le march� du village \"le village des irr�ductibles\" poss�de plusieurs �tals :\n");
-		ChaineRenvoyee.append(marche.afficherMarche());
-		return ChaineRenvoyee.toString();
+		StringBuilder chaineRenvoyee = new StringBuilder();
+		chaineRenvoyee.append("Le marche du village \"le village des irreductibles\" possede plusieurs etals :\n");
+		chaineRenvoyee.append(marche.afficherMarche());
+		return chaineRenvoyee.toString();
 	}
 }
 
